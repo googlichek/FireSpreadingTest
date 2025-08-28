@@ -19,4 +19,10 @@ class FIRESPREADING_API IFlammableInterface
 {
 	GENERATED_BODY()
 
+public:
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void TryStartBurning(AActor* InInstigator);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool IsBurning();
 };

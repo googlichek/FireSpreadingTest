@@ -13,4 +13,7 @@ UCLASS()
 class FIRESPREADING_API AFireSpreadingPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
+protected:
+	virtual void BeginPlay() override;
 };
