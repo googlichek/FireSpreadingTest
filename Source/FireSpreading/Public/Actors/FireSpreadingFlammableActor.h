@@ -7,6 +7,7 @@
 #include "Interface/IFlammableInterface.h"
 #include "FireSpreadingFlammableActor.generated.h"
 
+class UColorComponent;
 class UFireSpreadingGameInstance;
 class USphereComponent;
 
@@ -34,6 +35,9 @@ public:
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UStaticMeshComponent> Mesh;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UColorComponent> ColorComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<USphereComponent> SpreadAreaSphere;

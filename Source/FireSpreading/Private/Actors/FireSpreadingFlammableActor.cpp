@@ -3,6 +3,7 @@
 
 #include "Actors/FireSpreadingFlammableActor.h"
 
+#include "Actors/Components/ColorComponent.h"
 #include "Actors/Interface/IFlammableInterface.h"
 #include "Components/SphereComponent.h"
 #include "Game/FireSpreadingGameInstance.h"
@@ -18,6 +19,8 @@ AFireSpreadingFlammableActor::AFireSpreadingFlammableActor()
 	Mesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	Mesh->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 	SetRootComponent(Mesh);
+
+	ColorComponent = CreateDefaultSubobject<UColorComponent>(TEXT("ColorComponent"));
 
 	SpreadAreaSphere = CreateDefaultSubobject<USphereComponent>(TEXT("AreaSphere"));
 	SpreadAreaSphere->SetupAttachment(RootComponent);
@@ -40,6 +43,9 @@ void AFireSpreadingFlammableActor::BeginPlay()
 	Mesh->OnClicked.AddDynamic(this, &ThisClass::OnMouseClicked);
 
 	CurrentHealth = MaxHealth;
+
+	ColorComponent->CreateAndAssignDynamicMaterialInstances(Mesh, this);
+	ColorComponent->SetInitialColor();
 }
 
 void AFireSpreadingFlammableActor::Tick(float DeltaTime)
@@ -57,6 +63,9 @@ void AFireSpreadingFlammableActor::Tick(float DeltaTime)
 	{
 		const float BurnedOffHealth = MaxHealth * DeltaTime / GetGameInstance()->GetTimeToBurn();
 		CurrentHealth -= BurnedOffHealth;
+
+		const float BurnProgress = (MaxHealth - CurrentHealth) / MaxHealth;
+		ColorComponent->SetBurnProgressColor(BurnProgress);
 
 		if (SinceStartedBurningTicks % TryBurnIntervalTicks == 0)
 		{
@@ -141,6 +150,9 @@ void AFireSpreadingFlammableActor::OnMouseClicked(UPrimitiveComponent* TouchedCo
 void AFireSpreadingFlammableActor::StartBurning()
 {
 	IsInFlames = true;
+
+	const float BurnProgress = (MaxHealth - CurrentHealth) / MaxHealth;
+	ColorComponent->SetBurnProgressColor(BurnProgress);
 }
 
 UFireSpreadingGameInstance* AFireSpreadingFlammableActor::GetGameInstance()
