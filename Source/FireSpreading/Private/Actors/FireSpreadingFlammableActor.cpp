@@ -48,7 +48,8 @@ void AFireSpreadingFlammableActor::BeginPlay()
 	ColorComponent->CreateAndAssignDynamicMaterialInstances(Mesh, this);
 	ColorComponent->SetInitialColor();
 
-	SpreadAreaSphere->SetSphereRadius(GetGameInstance()->GetSpreadAreaRadius());
+	UpdateSpreadAreaRadius();
+	UpdateSpreadAreaSphereLocation();
 }
 
 void AFireSpreadingFlammableActor::Tick(float DeltaTime)
@@ -64,6 +65,9 @@ void AFireSpreadingFlammableActor::Tick(float DeltaTime)
 
 	if (CurrentHealth > 0)
 	{
+		UpdateSpreadAreaRadius();
+		UpdateSpreadAreaSphereLocation();
+
 		const float BurnedOffHealth = MaxHealth * DeltaTime / GetGameInstance()->GetTimeToBurn();
 		CurrentHealth -= BurnedOffHealth;
 
@@ -89,14 +93,8 @@ void AFireSpreadingFlammableActor::Tick(float DeltaTime)
 
 void AFireSpreadingFlammableActor::TryStartBurning_Implementation(AActor* InInstigator)
 {
-	const FVector DirectionFromInstigator = (GetActorLocation() - InInstigator->GetActorLocation()).GetSafeNormal();
-	const FVector WindDirection = GetGameInstance()->GetWindDirection().GetSafeNormal();
-
-	const float Alignment = FVector::DotProduct(WindDirection, DirectionFromInstigator);
-	const float WindInfluence = Alignment * 0.5f;
-
 	const float CurrentChance = FMath::RandRange(0.0f, 1.0f);
-	const float SpreadChance = FMath::Clamp(GetGameInstance()->GetSpreadChance() + WindInfluence, 0.0f, 1.0f);
+	const float SpreadChance = FMath::Clamp(GetGameInstance()->GetSpreadChance(), 0.0f, 1.0f);
 
 	if (CurrentChance <= SpreadChance)
 	{
@@ -104,12 +102,22 @@ void AFireSpreadingFlammableActor::TryStartBurning_Implementation(AActor* InInst
 	}
 }
 
-#if WITH_EDITOR
-void AFireSpreadingFlammableActor::PostEditChangeProperty(struct FPropertyChangedEvent& Event)
+void AFireSpreadingFlammableActor::UpdateSpreadAreaRadius()
 {
-	Super::PostEditChangeProperty(Event);
+	const float Radius = GetGameInstance()->GetSpreadAreaRadius();
+	SpreadAreaSphere->SetSphereRadius(Radius);
 }
-#endif
+
+void AFireSpreadingFlammableActor::UpdateSpreadAreaSphereLocation()
+{
+	const FVector WindDirection = GetGameInstance()->GetWindDirection().GetSafeNormal();
+	const float WindSpeed = GetGameInstance()->GetWindSpeed();
+
+	const FVector WindOffset = WindDirection * WindSpeed;
+
+	const FVector LocalWindOffset = GetActorTransform().InverseTransformVector(WindOffset);
+	SpreadAreaSphere->SetRelativeLocation(LocalWindOffset);
+}
 
 void AFireSpreadingFlammableActor::OnSphereOverlap(
 	UPrimitiveComponent* OverlappedComponent,

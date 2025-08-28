@@ -30,6 +30,11 @@ void UFireSpreadingGameInstance::SetWindDirection(const FVector InWindDirection)
 	WindDirection = InWindDirection;
 }
 
+void UFireSpreadingGameInstance::SetWindSpeed(const float InWindSpeed)
+{
+	WindSpeed = InWindSpeed;
+}
+
 void UFireSpreadingGameInstance::SetTimeToBurn(const float InTimeToBurn)
 {
 	TimeToBurn = InTimeToBurn;

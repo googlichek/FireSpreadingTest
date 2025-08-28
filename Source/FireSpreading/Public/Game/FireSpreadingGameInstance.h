@@ -27,6 +27,12 @@ public:
 	void SetWindDirection(FVector InWindDirection);
 
 	UFUNCTION(BlueprintCallable)
+	float GetWindSpeed() const { return WindSpeed; }
+
+	UFUNCTION(BlueprintCallable)
+	void SetWindSpeed(float InWindSpeed);
+
+	UFUNCTION(BlueprintCallable)
 	float GetTimeToBurn() const { return TimeToBurn; }
 
 	UFUNCTION(BlueprintCallable)
@@ -50,6 +56,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FVector WindDirection = FVector::ForwardVector;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 0, ClampMax = 1000))
+	float WindSpeed = 150.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 1, ClampMax = 100))
 	float TimeToBurn = 5.0f;

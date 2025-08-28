@@ -27,9 +27,8 @@ public:
 	virtual void TryStartBurning_Implementation(AActor* InInstigator) override;
 	virtual bool IsBurning_Implementation() override { return IsInFlames && CurrentHealth > 0; };
 
-#if WITH_EDITOR
-	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& Event) override;
-#endif
+	void UpdateSpreadAreaRadius();
+	void UpdateSpreadAreaSphereLocation();
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
