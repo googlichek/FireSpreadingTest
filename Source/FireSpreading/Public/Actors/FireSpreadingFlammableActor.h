@@ -24,7 +24,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// Flammable Interface
-
 	virtual void TryStartBurning_Implementation(AActor* InInstigator) override;
 	virtual bool IsBurning_Implementation() override { return IsInFlames && CurrentHealth > 0; };
 
@@ -43,7 +42,7 @@ protected:
 	TObjectPtr<USphereComponent> SpreadAreaSphere;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 50, ClampMax = 500))
-	float SpreadAreaRadius = 150.0f;
+	float SpreadAreaRadius = 250.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 1, ClampMax = 60))
 	int32 TryBurnIntervalTicks = 15;

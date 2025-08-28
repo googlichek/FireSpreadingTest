@@ -69,19 +69,18 @@ void AFireSpreadingFlammableActor::Tick(float DeltaTime)
 
 		if (SinceStartedBurningTicks % TryBurnIntervalTicks == 0)
 		{
-			for (int32 i = OverlappingAndNotBurningFlammables.Num() - 1; i >= 0; --i)
+			for (const auto Flammable : OverlappingAndNotBurningFlammables)
 			{
-				const auto Flammable = OverlappingAndNotBurningFlammables[i];
 				if (!Flammable->IsBurning_Implementation())
 				{
 					Flammable->TryStartBurning_Implementation(this);
 				}
-				else
-				{
-					OverlappingAndNotBurningFlammables.RemoveAt(i);
-				}
 			}
 		}
+	}
+	else
+	{
+		OverlappingAndNotBurningFlammables.Empty();
 	}
 }
 
