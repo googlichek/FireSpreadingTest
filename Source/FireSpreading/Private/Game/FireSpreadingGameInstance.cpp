@@ -25,6 +25,11 @@ FLinearColor UFireSpreadingGameInstance::GetColorFromPalette(const EColorPalette
 	return FLinearColor(0, 0, 0, 0);;
 }
 
+void UFireSpreadingGameInstance::SetWindDirection(const FVector InWindDirection)
+{
+	WindDirection = InWindDirection;
+}
+
 void UFireSpreadingGameInstance::SetTimeToBurn(const float InTimeToBurn)
 {
 	TimeToBurn = InTimeToBurn;
@@ -33,4 +38,9 @@ void UFireSpreadingGameInstance::SetTimeToBurn(const float InTimeToBurn)
 void UFireSpreadingGameInstance::SetSpreadChance(const float InSpreadChance)
 {
 	SpreadChance = InSpreadChance;
+}
+
+void UFireSpreadingGameInstance::SetSpreadAreaRadius(const float InSpreadAreaRadius)
+{
+	SpreadAreaRadius = InSpreadAreaRadius;
 }

@@ -41,9 +41,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<USphereComponent> SpreadAreaSphere;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 50, ClampMax = 500))
-	float SpreadAreaRadius = 250.0f;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 1, ClampMax = 60))
 	int32 TryBurnIntervalTicks = 15;
 

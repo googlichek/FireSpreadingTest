@@ -24,12 +24,13 @@ AFireSpreadingFlammableActor::AFireSpreadingFlammableActor()
 
 	SpreadAreaSphere = CreateDefaultSubobject<USphereComponent>(TEXT("AreaSphere"));
 	SpreadAreaSphere->SetupAttachment(RootComponent);
-	SpreadAreaSphere->SetSphereRadius(SpreadAreaRadius);
 	SpreadAreaSphere->SetSimulatePhysics(false);
 	SpreadAreaSphere->SetEnableGravity(false);
 	SpreadAreaSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
-	SpreadAreaSphere->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
+	SpreadAreaSphere->SetCollisionResponseToChannel(ECC_PhysicsBody, ECR_Overlap);
 	SpreadAreaSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+
+	bGenerateOverlapEventsDuringLevelStreaming = true;
 }
 
 // Called when the game starts or when spawned
@@ -46,6 +47,8 @@ void AFireSpreadingFlammableActor::BeginPlay()
 
 	ColorComponent->CreateAndAssignDynamicMaterialInstances(Mesh, this);
 	ColorComponent->SetInitialColor();
+
+	SpreadAreaSphere->SetSphereRadius(GetGameInstance()->GetSpreadAreaRadius());
 }
 
 void AFireSpreadingFlammableActor::Tick(float DeltaTime)
@@ -86,9 +89,16 @@ void AFireSpreadingFlammableActor::Tick(float DeltaTime)
 
 void AFireSpreadingFlammableActor::TryStartBurning_Implementation(AActor* InInstigator)
 {
-	const float CurrentChance = FMath::RandRange(0.0f, 1.0f);
+	const FVector DirectionFromInstigator = (GetActorLocation() - InInstigator->GetActorLocation()).GetSafeNormal();
+	const FVector WindDirection = GetGameInstance()->GetWindDirection().GetSafeNormal();
 
-	if (CurrentChance <= GetGameInstance()->GetSpreadChance())
+	const float Alignment = FVector::DotProduct(WindDirection, DirectionFromInstigator);
+	const float WindInfluence = Alignment * 0.5f;
+
+	const float CurrentChance = FMath::RandRange(0.0f, 1.0f);
+	const float SpreadChance = FMath::Clamp(GetGameInstance()->GetSpreadChance() + WindInfluence, 0.0f, 1.0f);
+
+	if (CurrentChance <= SpreadChance)
 	{
 		StartBurning();
 	}
