@@ -41,7 +41,7 @@ protected:
 	TObjectPtr<USphereComponent> SpreadAreaSphere;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 1, ClampMax = 60))
-	int32 TryBurnIntervalTicks = 20;
+	int32 TryBurnIntervalTicks = 30;
 
 	UPROPERTY(VisibleAnywhere, Transient)
 	TArray<TScriptInterface<IFlammableInterface>> OverlappingAndNotBurningFlammables;

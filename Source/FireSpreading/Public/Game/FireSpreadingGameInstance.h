@@ -61,7 +61,7 @@ protected:
 	TObjectPtr<UFireSpreadingColorPaletteDataAsset> ColorPaletteData;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 100, ClampMax = 5000))
-	float NumberOfObjects = 1000.0f;
+	int32 NumberOfObjects = 1000;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FVector WindDirection = FVector::ForwardVector;

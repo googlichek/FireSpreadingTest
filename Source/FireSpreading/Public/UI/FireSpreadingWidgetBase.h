@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/Widget.h"
+#include "Blueprint/UserWidget.h"
 #include "FireSpreadingWidgetBase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class FIRESPREADING_API UFireSpreadingWidgetBase : public UWidget
+class FIRESPREADING_API UFireSpreadingWidgetBase : public UUserWidget
 {
 	GENERATED_BODY()
 };

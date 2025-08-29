@@ -76,9 +76,6 @@ void AFireSpreadingFlammableActor::Tick(float DeltaTime)
 
 	if (CurrentHealth > 0)
 	{
-		UpdateSpreadAreaRadius();
-		UpdateSpreadAreaSphereLocation();
-
 		const float BurnedOffHealth = MaxHealth * DeltaTime / GetGameInstance()->GetTimeToBurn();
 		CurrentHealth -= BurnedOffHealth;
 
@@ -87,6 +84,9 @@ void AFireSpreadingFlammableActor::Tick(float DeltaTime)
 
 		if (SinceStartedBurningTicks % TryBurnIntervalTicks == 0)
 		{
+			UpdateSpreadAreaRadius();
+			UpdateSpreadAreaSphereLocation();
+
 			for (const auto Flammable : OverlappingAndNotBurningFlammables)
 			{
 				if (!Flammable->IsBurning_Implementation())
@@ -195,6 +195,9 @@ void AFireSpreadingFlammableActor::StartBurning()
 	SetActorTickEnabled(true);
 
 	IsInFlames = true;
+
+	UpdateSpreadAreaRadius();
+	UpdateSpreadAreaSphereLocation();
 
 	const float BurnProgress = (MaxHealth - CurrentHealth) / MaxHealth;
 	ColorComponent->SetBurnProgressColor(BurnProgress);
