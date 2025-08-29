@@ -25,6 +25,11 @@ FLinearColor UFireSpreadingGameInstance::GetColorFromPalette(const EColorPalette
 	return FLinearColor(0, 0, 0, 0);;
 }
 
+void UFireSpreadingGameInstance::SetNumberOfObjects(const float InNumberOfObjects)
+{
+	NumberOfObjects = InNumberOfObjects;
+}
+
 void UFireSpreadingGameInstance::SetWindDirection(const FVector InWindDirection)
 {
 	WindDirection = InWindDirection;

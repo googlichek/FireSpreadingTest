@@ -21,7 +21,7 @@ public:
 	void CreateAndAssignDynamicMaterialInstances(UPrimitiveComponent* InMesh, AActor* InOwner);
 
 	void SetInitialColor();
-	void SetBurnProgressColor(float InProgress);
+	void SetBurnProgressColor(float InProgress, bool ShouldForceUpdate = false);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
@@ -33,6 +33,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	EColorPalette BurningEndColor = EColorPalette::Black;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 1, ClampMax = 60))
+	int32 UpdateIntervalTicks = 6;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FName ColorPropertyName = FName("Color");
 
@@ -41,6 +44,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Transient)
 	TObjectPtr<UFireSpreadingGameInstance> FireSpreadingGameInstance = nullptr;
+
+	UPROPERTY(VisibleAnywhere, Transient)
+	int32 SinceStartedBurningTicks = 0;
 
 	virtual void BeginPlay() override;
 

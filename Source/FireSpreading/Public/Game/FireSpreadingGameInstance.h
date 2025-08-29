@@ -21,6 +21,12 @@ public:
 	FLinearColor GetColorFromPalette(EColorPalette Color) const;
 
 	UFUNCTION(BlueprintCallable)
+	float GetNumberOfObjects() const { return NumberOfObjects; }
+
+	UFUNCTION(BlueprintCallable)
+	void SetNumberOfObjects(float InNumberOfObjects);
+
+	UFUNCTION(BlueprintCallable)
 	FVector GetWindDirection() const { return WindDirection; }
 
 	UFUNCTION(BlueprintCallable)
@@ -54,6 +60,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UFireSpreadingColorPaletteDataAsset> ColorPaletteData;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 100, ClampMax = 5000))
+	float NumberOfObjects = 1000.0f;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FVector WindDirection = FVector::ForwardVector;
 
@@ -66,6 +75,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 50, ClampMax = 500))
 	float SpreadAreaRadius = 250.0f;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 0.0f, ClampMax = 0.5f))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 0.0f, ClampMax = 1.0f))
 	float SpreadChance = 0.5f;
 };

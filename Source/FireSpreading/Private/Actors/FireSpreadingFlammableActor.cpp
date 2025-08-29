@@ -6,6 +6,7 @@
 #include "Actors/Components/ColorComponent.h"
 #include "Actors/Interface/IFlammableInterface.h"
 #include "Components/SphereComponent.h"
+#include "FireSpreading/FireSpreading.h"
 #include "Game/FireSpreadingGameInstance.h"
 
 
@@ -15,9 +16,12 @@ AFireSpreadingFlammableActor::AFireSpreadingFlammableActor()
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
 	Mesh->SetSimulatePhysics(true);
-	Mesh->SetCollisionProfileName(UCollisionProfile::PhysicsActor_ProfileName);
+	Mesh->SetEnableGravity(false);
 	Mesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	Mesh->SetCollisionResponseToAllChannels(ECR_Ignore);
 	Mesh->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+	Mesh->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
+	Mesh->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
 	SetRootComponent(Mesh);
 
 	ColorComponent = CreateDefaultSubobject<UColorComponent>(TEXT("ColorComponent"));
@@ -27,7 +31,7 @@ AFireSpreadingFlammableActor::AFireSpreadingFlammableActor()
 	SpreadAreaSphere->SetSimulatePhysics(false);
 	SpreadAreaSphere->SetEnableGravity(false);
 	SpreadAreaSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
-	SpreadAreaSphere->SetCollisionResponseToChannel(ECC_PhysicsBody, ECR_Overlap);
+	SpreadAreaSphere->SetCollisionResponseToChannel(ECC_Flammable, ECR_Overlap);
 	SpreadAreaSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 
 	bGenerateOverlapEventsDuringLevelStreaming = true;
@@ -72,7 +76,7 @@ void AFireSpreadingFlammableActor::Tick(float DeltaTime)
 		CurrentHealth -= BurnedOffHealth;
 
 		const float BurnProgress = (MaxHealth - CurrentHealth) / MaxHealth;
-		ColorComponent->SetBurnProgressColor(BurnProgress);
+		ColorComponent->SetBurnProgressColor(BurnProgress, CurrentHealth <= 0);
 
 		if (SinceStartedBurningTicks % TryBurnIntervalTicks == 0)
 		{

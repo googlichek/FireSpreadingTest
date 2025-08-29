@@ -41,15 +41,20 @@ void UColorComponent::SetInitialColor()
 	}
 }
 
-void UColorComponent::SetBurnProgressColor(float InProgress)
+void UColorComponent::SetBurnProgressColor(const float InProgress, const bool ShouldForceUpdate)
 {
-	const FLinearColor StartColor = GetGameInstance()->GetColorFromPalette(BurningStartColor);
-	const FLinearColor EndColor = GetGameInstance()->GetColorFromPalette(BurningEndColor);
+	SinceStartedBurningTicks++;
 
-	const FLinearColor CurrentColor = FLinearColor::LerpUsingHSV(StartColor, EndColor, InProgress);
-	for (const auto DynamicMI : DynamicMIs)
+	if (ShouldForceUpdate || SinceStartedBurningTicks % UpdateIntervalTicks == 0)
 	{
-		DynamicMI->SetVectorParameterValue(ColorPropertyName, CurrentColor);
+		const FLinearColor StartColor = GetGameInstance()->GetColorFromPalette(BurningStartColor);
+		const FLinearColor EndColor = GetGameInstance()->GetColorFromPalette(BurningEndColor);
+
+		const FLinearColor CurrentColor = FLinearColor::LerpUsingHSV(StartColor, EndColor, InProgress);
+		for (const auto DynamicMI : DynamicMIs)
+		{
+			DynamicMI->SetVectorParameterValue(ColorPropertyName, CurrentColor);
+		}
 	}
 }
 
