@@ -42,6 +42,8 @@ void AFireSpreadingFlammableActor::BeginPlay()
 {
 	Super::BeginPlay();
 
+	SetActorTickEnabled(false);
+
 	SpreadAreaSphere->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnSphereOverlap);
 	SpreadAreaSphere->OnComponentEndOverlap.AddDynamic(this, &ThisClass::OnSphereEndOverlap);
 
@@ -61,6 +63,11 @@ void AFireSpreadingFlammableActor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	if (!IsInFlames)
+	{
+		return;
+	}
+
+	if (CurrentHealth <= 0)
 	{
 		return;
 	}
@@ -88,10 +95,15 @@ void AFireSpreadingFlammableActor::Tick(float DeltaTime)
 				}
 			}
 		}
-	}
-	else
-	{
-		OverlappingAndNotBurningFlammables.Empty();
+
+		if (CurrentHealth <= 0)
+		{
+			SetActorTickEnabled(false);
+			Mesh->SetSimulatePhysics(false);
+			Mesh->SetGenerateOverlapEvents(false);
+			SpreadAreaSphere->SetGenerateOverlapEvents(false);
+			OverlappingAndNotBurningFlammables.Empty();
+		}
 	}
 }
 
@@ -131,6 +143,11 @@ void AFireSpreadingFlammableActor::OnSphereOverlap(
 	bool bFromSweep,
 	const FHitResult& SweepResult)
 {
+	if (CurrentHealth <= 0)
+	{
+		return;
+	}
+
 	 if (OtherActor && OtherActor != this)
 	{
 		if (OtherActor->Implements<UFlammableInterface>())
@@ -154,6 +171,11 @@ void AFireSpreadingFlammableActor::OnSphereEndOverlap(
 	AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int OtherBodyIndex)
 {
+	if (CurrentHealth <= 0)
+	{
+		return;
+	}
+
 	if (OtherActor && OtherActor != this)
 	{
 		if (OverlappingAndNotBurningFlammables.Contains(OtherActor))
@@ -170,6 +192,8 @@ void AFireSpreadingFlammableActor::OnMouseClicked(UPrimitiveComponent* TouchedCo
 
 void AFireSpreadingFlammableActor::StartBurning()
 {
+	SetActorTickEnabled(true);
+
 	IsInFlames = true;
 
 	const float BurnProgress = (MaxHealth - CurrentHealth) / MaxHealth;
