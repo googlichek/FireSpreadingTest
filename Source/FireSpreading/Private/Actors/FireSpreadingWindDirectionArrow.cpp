@@ -6,22 +6,9 @@
 #include "Game/FireSpreadingGameInstance.h"
 
 
-// Sets default values
 AFireSpreadingWindDirectionArrow::AFireSpreadingWindDirectionArrow()
 {
 	PrimaryActorTick.bCanEverTick = true;
-}
-
-void AFireSpreadingWindDirectionArrow::BeginPlay()
-{
-	Super::BeginPlay();
-
-}
-
-// Called every frame
-void AFireSpreadingWindDirectionArrow::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 }
 
 UFireSpreadingGameInstance* AFireSpreadingWindDirectionArrow::GetFireSpreadingGameInstance()

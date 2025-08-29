@@ -37,7 +37,6 @@ AFireSpreadingFlammableActor::AFireSpreadingFlammableActor()
 	bGenerateOverlapEventsDuringLevelStreaming = true;
 }
 
-// Called when the game starts or when spawned
 void AFireSpreadingFlammableActor::BeginPlay()
 {
 	Super::BeginPlay();

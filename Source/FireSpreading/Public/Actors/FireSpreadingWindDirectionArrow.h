@@ -19,11 +19,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	UFireSpreadingGameInstance* GetFireSpreadingGameInstance();
 
-	virtual void Tick(float DeltaTime) override;
-
 protected:
-	virtual void BeginPlay() override;
-
 	UPROPERTY(VisibleAnywhere, Transient)
 	TObjectPtr<UFireSpreadingGameInstance> FireSpreadingGameInstance = nullptr;
 };
