@@ -57,8 +57,8 @@ void AFireSpreadingCubeSpawner::OnSpawnQueryCompleted(TSharedPtr<FEnvQueryResult
 				FActorSpawnParameters SpawnParameters;
 				SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
-				const float JitterX = FMath::RandRange(-SpawnJitterOffset, SpawnJitterOffset);
-				const float JitterY = FMath::RandRange(-SpawnJitterOffset, SpawnJitterOffset);
+				const float JitterX = FMath::RandRange(-SpawnJitter, SpawnJitter);
+				const float JitterY = FMath::RandRange(-SpawnJitter, SpawnJitter);
 
 				const FVector FinalLocation = Location + FVector(JitterX, JitterY, CubeSize * 0.5f);
 

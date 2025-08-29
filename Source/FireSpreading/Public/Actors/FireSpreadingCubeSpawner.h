@@ -29,14 +29,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UEnvQuery> SpawnPositionQuery;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 0, ClampMax = 150))
-	float SpawnJitterOffset = 50.0f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 0, ClampMax = 100))
+	float SpawnJitter = 25.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 0, ClampMax = 150))
 	float CubeSize = 50.0f;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 0, ClampMax = 50))
-	int32 SpawnBatch = 5;
 
 	UPROPERTY(VisibleAnywhere, Transient)
 	TObjectPtr<UFireSpreadingGameInstance> FireSpreadingGameInstance = nullptr;
