@@ -21,10 +21,16 @@ public:
 	FLinearColor GetColorFromPalette(EColorPalette Color) const;
 
 	UFUNCTION(BlueprintCallable)
-	float GetNumberOfObjects() const { return NumberOfObjects; }
+	int32 GetNumberOfObjects() const { return NumberOfObjects; }
 
 	UFUNCTION(BlueprintCallable)
-	void SetNumberOfObjects(float InNumberOfObjects);
+	int32 GetMinNumberOfObjects() const { return 300; }
+
+	UFUNCTION(BlueprintCallable)
+	int32 GetMaxNumberOfObjects() const { return 5000; }
+
+	UFUNCTION(BlueprintCallable)
+	void SetNumberOfObjects(int32 InNumberOfObjects);
 
 	UFUNCTION(BlueprintCallable)
 	FVector GetWindDirection() const { return WindDirection; }
@@ -36,10 +42,22 @@ public:
 	float GetWindSpeed() const { return WindSpeed; }
 
 	UFUNCTION(BlueprintCallable)
+	float GetMinWindSpeed() const { return 0; }
+
+	UFUNCTION(BlueprintCallable)
+	float GetMaxWindSpeed() const { return 1000; }
+
+	UFUNCTION(BlueprintCallable)
 	void SetWindSpeed(float InWindSpeed);
 
 	UFUNCTION(BlueprintCallable)
 	float GetTimeToBurn() const { return TimeToBurn; }
+
+	UFUNCTION(BlueprintCallable)
+	float GetMinTimeToBurn() const { return 1; }
+
+	UFUNCTION(BlueprintCallable)
+	float GetMaxTimeToBurn() const { return 25; }
 
 	UFUNCTION(BlueprintCallable)
 	void SetTimeToBurn(float InTimeToBurn);
@@ -48,10 +66,22 @@ public:
 	float GetSpreadChance() const { return SpreadChance; }
 
 	UFUNCTION(BlueprintCallable)
+	float GetMinSpreadChance() const { return 0; }
+
+	UFUNCTION(BlueprintCallable)
+	float GetMaxSpreadChance() const { return 1; }
+
+	UFUNCTION(BlueprintCallable)
 	void SetSpreadChance(float InSpreadChance);
 
 	UFUNCTION(BlueprintCallable)
 	float GetSpreadAreaRadius() const { return SpreadAreaRadius; }
+
+	UFUNCTION(BlueprintCallable)
+	float GetMinSpreadAreaRadius() const { return 50; }
+
+	UFUNCTION(BlueprintCallable)
+	float GetMaxSpreadAreaRadius() const { return 500; }
 
 	UFUNCTION(BlueprintCallable)
 	void SetSpreadAreaRadius(float InSpreadAreaRadius);
@@ -69,7 +99,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 0, ClampMax = 1000))
 	float WindSpeed = 150.0f;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 1, ClampMax = 100))
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 1, ClampMax = 25))
 	float TimeToBurn = 5.0f;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (ClampMin = 50, ClampMax = 500))

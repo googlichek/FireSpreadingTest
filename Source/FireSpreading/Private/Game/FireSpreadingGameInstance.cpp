@@ -25,7 +25,7 @@ FLinearColor UFireSpreadingGameInstance::GetColorFromPalette(const EColorPalette
 	return FLinearColor(0, 0, 0, 0);;
 }
 
-void UFireSpreadingGameInstance::SetNumberOfObjects(const float InNumberOfObjects)
+void UFireSpreadingGameInstance::SetNumberOfObjects(const int32 InNumberOfObjects)
 {
 	NumberOfObjects = InNumberOfObjects;
 }

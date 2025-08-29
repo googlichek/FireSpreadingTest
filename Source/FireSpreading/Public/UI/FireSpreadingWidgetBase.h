@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "FireSpreadingWidgetBase.generated.h"
 
+class UFireSpreadingGameInstance;
 /**
  * 
  */
@@ -13,4 +14,14 @@ UCLASS()
 class FIRESPREADING_API UFireSpreadingWidgetBase : public UUserWidget
 {
 	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	UFireSpreadingGameInstance* GetFireSpreadingGameInstance();
+
+protected:
+	UPROPERTY(VisibleAnywhere, Transient)
+	TObjectPtr<UFireSpreadingGameInstance> FireSpreadingGameInstance = nullptr;
+
+
 };
